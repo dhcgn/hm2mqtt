@@ -10,6 +10,8 @@
 With this plugin you can use MQTT to watch and control the HomeMatic CCU3.
 And with openHAP you can use **Google Assistent** to control the HomeMatic smart devices.
 
+![Screenshot](https://i.ibb.co/PWphmXK/screenshot.png")
+
 ## Getting Started
 
 1. Set up an Broker e.g. [eclipse-mosquitto](https://registry.hub.docker.com/_/eclipse-mosquitto/)
