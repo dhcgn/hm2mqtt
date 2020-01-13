@@ -27,7 +27,7 @@ jobs:
       - save_cache:
           key: workspace-v1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - /workspace/src
+            - /workspace/
 
   test:
     <<: *defaults
