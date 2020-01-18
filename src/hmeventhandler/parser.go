@@ -33,7 +33,7 @@ func parseEventMultiCall(content string) ([]event, error) {
 	}
 
 	var events []event
-	for i, _ := range v.Methods {
+	for i := range v.Methods {
 		serialNumber, what := extractData(v.Methods[i].MembersInnerXml)
 		event := event{
 			MethodName:   extractMethodName(v.Methods[i].MembersInnerXml),

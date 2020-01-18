@@ -30,7 +30,7 @@ func main() {
 
 	go func() { hmeventhandler.UploadLoop(events) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
-	go func() { SyncLoop(ticker.C, config) }()
+	go func() { syncLoop(ticker.C, config) }()
 	go func() { statsLoop(tickerStatus.C, events) }()
 
 	c := make(chan os.Signal)
@@ -53,10 +53,7 @@ func statsLoop(tick <-chan time.Time, events chan string) {
 	}
 }
 
-func SyncLoop(tick <-chan time.Time, config *config) {
-	// Init
-	log.Print("SyncLoop Init")
-
+func syncLoop(tick <-chan time.Time, config *config) {
 	if runtime.GOOS == "windows" {
 		log.Println("Skipped on windows")
 		return
@@ -66,7 +63,6 @@ func SyncLoop(tick <-chan time.Time, config *config) {
 	hmclient.Init(config.ListenerPort, config.InterfaceId, config.HomematicUrl)
 
 	for range tick {
-		log.Print("SyncLoop Started")
 		hmclient.Init(config.ListenerPort, config.InterfaceId, config.HomematicUrl)
 		// devices <- client.GetDevices()
 	}
