@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/dhcgn/GoHomeMaticMqttPlugin.svg?style=svg)](https://circleci.com/gh/dhcgn/GoHomeMaticMqttPlugin)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dhcgn/GoHomeMaticMqttPlugin)](https://goreportcard.com/report/github.com/dhcgn/GoHomeMaticMqttPlugin)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/maintainability)](https://codeclimate.com/github/dhcgn/GoHomeMaticMqttPlugin/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/test_coverage)](https://codeclimate.com/github/dhcgn/GoHomeMaticMqttPlugin/test_coverage)
 
 :exclamation: Not yet ready for use!
 
