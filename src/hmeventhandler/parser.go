@@ -8,13 +8,17 @@ import (
 	"log"
 )
 
-type Event struct {
+type internalEvent struct {
 	MembersInnerXml string `xml:",innerxml"`
+}
+
+type Event struct {
 	MethodName      string
 	SerialNumber    string
 	Type            string
 	DataValue       string
 }
+
 
 func parseEventMultiCall(content string) []Event {
 
@@ -23,30 +27,29 @@ func parseEventMultiCall(content string) []Event {
 	decoder.CharsetReader = charset.NewReaderLabel
 
 	type People struct {
-		Methods []Event `xml:"params>param>value>array>data>value"`
+		Methods []internalEvent `xml:"params>param>value>array>data>value"`
 	}
 
-	v := People{Methods: []Event{}}
+	v := People{Methods: []internalEvent{}}
 	if err := decoder.Decode(&v); err != nil {
 		log.Fatalf("unable to parse XML '%s'", err)
 	}
 
 	fmt.Println("len: ", len(v.Methods))
 
+	var events []Event
 	for i, _ := range v.Methods {
-		// fmt.Println(i, value)
-
-		v.Methods[i].MethodName = extractMethodName(v.Methods[i].MembersInnerXml)
 		serialNumber, what := extractData(v.Methods[i].MembersInnerXml)
-		v.Methods[i].SerialNumber = serialNumber
-		v.Methods[i].Type = what
-
-		v.Methods[i].DataValue = extractDataValue(v.Methods[i].MembersInnerXml)
-
-		// fmt.Println(v.Methods[i].SerialNumber, v.Methods[i].Type, v.Methods[i].DataValue)
+		event := Event{
+			MethodName:   extractMethodName(v.Methods[i].MembersInnerXml),
+			SerialNumber: serialNumber,
+			Type:         what,
+			DataValue:    extractDataValue(v.Methods[i].MembersInnerXml),
+		}
+		events = append(events, event)
 	}
 
-	return v.Methods
+	return events
 }
 
 func extractDataValue(innerXml string) (dataValue string) {
