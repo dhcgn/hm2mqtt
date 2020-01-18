@@ -3,7 +3,6 @@ package hmeventhandler
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"golang.org/x/net/html/charset"
 	"log"
 )
@@ -13,29 +12,26 @@ type internalEvent struct {
 }
 
 type Event struct {
-	MethodName      string
-	SerialNumber    string
-	Type            string
-	DataValue       string
+	MethodName   string
+	SerialNumber string
+	Type         string
+	DataValue    string
 }
 
-
-func parseEventMultiCall(content string) []Event {
+func parseEventMultiCall(content string) ([]Event, error) {
 
 	reader := bytes.NewReader([]byte(content))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
 
-	type People struct {
+	type xmlStruct struct {
 		Methods []internalEvent `xml:"params>param>value>array>data>value"`
 	}
 
-	v := People{Methods: []internalEvent{}}
+	v := xmlStruct{Methods: []internalEvent{}}
 	if err := decoder.Decode(&v); err != nil {
-		log.Fatalf("unable to parse XML '%s'", err)
+		return nil, err
 	}
-
-	fmt.Println("len: ", len(v.Methods))
 
 	var events []Event
 	for i, _ := range v.Methods {
@@ -49,7 +45,7 @@ func parseEventMultiCall(content string) []Event {
 		events = append(events, event)
 	}
 
-	return events
+	return events, nil
 }
 
 func extractDataValue(innerXml string) (dataValue string) {
@@ -57,28 +53,28 @@ func extractDataValue(innerXml string) (dataValue string) {
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
 
-	type DummyData struct {
+	type XmlData struct {
 		ValueInt4    string `xml:"member>value>array>data>value>i4"`
 		ValueDouble  string `xml:"member>value>array>data>value>double"`
 		ValueBoolean string `xml:"member>value>array>data>value>boolean"`
 	}
 
-	dDummyData := DummyData{}
+	xmlData := XmlData{}
 
-	if err := decoder.Decode(&dDummyData); err != nil {
+	if err := decoder.Decode(&xmlData); err != nil {
 		log.Fatalf("unable to parse XML '%s'", err)
 	}
 
-	if dDummyData.ValueDouble != "" {
-		return dDummyData.ValueDouble
+	if xmlData.ValueDouble != "" {
+		return xmlData.ValueDouble
 	}
 
-	if dDummyData.ValueInt4 != "" {
-		return dDummyData.ValueInt4
+	if xmlData.ValueInt4 != "" {
+		return xmlData.ValueInt4
 	}
 
-	if dDummyData.ValueBoolean != "" {
-		return dDummyData.ValueBoolean
+	if xmlData.ValueBoolean != "" {
+		return xmlData.ValueBoolean
 	}
 
 	return "unknown"

@@ -19,7 +19,10 @@ func UploadLoop(messages <-chan string) {
 
 	for {
 		stringBody := <-messages
-		var events = parseEventMultiCall(stringBody)
+		var events, err = parseEventMultiCall(stringBody)
+		if err != nil {
+			continue
+		}
 
 		for _, e := range events {
 			sendToBroker(e)
