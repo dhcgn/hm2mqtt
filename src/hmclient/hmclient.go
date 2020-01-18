@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+//GetDevices request all device from the CCU
 func GetDevices() string {
 	body := `<?xml version="1.0"?>
 <methodCall><methodName>listDevices</methodName>`
@@ -21,6 +22,7 @@ func GetDevices() string {
 	return string(b)
 }
 
+//Init send a request to the CCU to subscribe http posts
 func Init(port int, interfaceId int, homematicUrl string) string {
 	body :=
 		`<?xml version="1.0"?>

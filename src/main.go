@@ -22,8 +22,7 @@ func main() {
 
 	log.Println("Starting")
 
-	config := ReadConfig()
-	log.Println("ReadConfig: ", config)
+	config := readConfig()
 
 	events := make(chan string, 1000)
 	ticker := time.NewTicker(1 * time.Minute)
@@ -32,7 +31,7 @@ func main() {
 	go func() { hmeventhandler.UploadLoop(events) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
 	go func() { SyncLoop(ticker.C, config) }()
-	go func() { StatsLoop(tickerStatus.C, events) }()
+	go func() { statsLoop(tickerStatus.C, events) }()
 
 	c := make(chan os.Signal)
 	cleanupDone := make(chan os.Signal)
@@ -45,9 +44,12 @@ func main() {
 	<-cleanupDone
 }
 
-func StatsLoop(tick <-chan time.Time, events chan string) {
+func statsLoop(tick <-chan time.Time, events chan string) {
 	for range tick {
-		log.Println("Events: ", len(events))
+		eventCount := len(events)
+		if eventCount != 0 {
+			log.Println("Events: ", eventCount)
+		}
 	}
 }
 

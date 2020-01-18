@@ -196,15 +196,15 @@ func Test_parseEventMultiCall(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []Event
+		want    []event
 		wantErr bool
 	}{
-		{name: "multiple events", args: struct{ content string }{content: getTestData("standard")}, want: []Event{
+		{name: "multiple events", args: struct{ content string }{content: getTestData("standard")}, want: []event{
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "FAULT_REPORTING", DataValue: "0"},
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "BATTERY_STATE", DataValue: "2.500000"},
 			{MethodName: "event", SerialNumber: "JEQ000000:0", Type: "UNREACH", DataValue: "1"},
 		}},
-		{name: "multiple events iso-8859-1", args: struct{ content string }{content: getTestData("iso-8859-1")}, want: []Event{
+		{name: "multiple events iso-8859-1", args: struct{ content string }{content: getTestData("iso-8859-1")}, want: []event{
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "FAULT_REPORTING", DataValue: "0"},
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "BATTERY_STATE", DataValue: "2.500000"},
 			{MethodName: "event", SerialNumber: "JEQ000000:0", Type: "UNREACH", DataValue: "1"},
@@ -232,7 +232,7 @@ func Test_parseEventMultiCall1(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []Event
+		want    []event
 		wantErr bool
 	}{
 		// TODO: Add test cases.

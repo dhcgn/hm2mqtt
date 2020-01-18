@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//New create a http server
 func New(mux *http.ServeMux, port int) *http.Server {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),

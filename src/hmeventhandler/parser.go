@@ -11,15 +11,14 @@ type internalEvent struct {
 	MembersInnerXml string `xml:",innerxml"`
 }
 
-type Event struct {
+type event struct {
 	MethodName   string
 	SerialNumber string
 	Type         string
 	DataValue    string
 }
 
-func parseEventMultiCall(content string) ([]Event, error) {
-
+func parseEventMultiCall(content string) ([]event, error) {
 	reader := bytes.NewReader([]byte(content))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
@@ -33,10 +32,10 @@ func parseEventMultiCall(content string) ([]Event, error) {
 		return nil, err
 	}
 
-	var events []Event
+	var events []event
 	for i, _ := range v.Methods {
 		serialNumber, what := extractData(v.Methods[i].MembersInnerXml)
-		event := Event{
+		event := event{
 			MethodName:   extractMethodName(v.Methods[i].MembersInnerXml),
 			SerialNumber: serialNumber,
 			Type:         what,

@@ -12,6 +12,7 @@ var (
 	c    = mqtt.NewClient(opts)
 )
 
+//UploadLoop parse incoming messages from chan to Events and end them via mqtt to the broker
 func UploadLoop(messages <-chan string) {
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
@@ -30,7 +31,7 @@ func UploadLoop(messages <-chan string) {
 	}
 }
 
-func sendToBroker(e Event) {
+func sendToBroker(e event) {
 	topic := "hm/" + e.SerialNumber + "/" + e.Type
 
 	start := time.Now()

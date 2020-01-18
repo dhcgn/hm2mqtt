@@ -14,7 +14,7 @@ type config struct {
 	HomematicUrl string
 }
 
-func ReadConfig() *config {
+func readConfig() *config {
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	configPath := filepath.Join(dir, "config.json")
 	configSamplePath := filepath.Join(dir, "config.sample.json")

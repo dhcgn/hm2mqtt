@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+//StartServer start a http listener and write all incoming request to the chan
 func StartServer(messages chan<- string, port int) {
 
 	mux := http.NewServeMux()
