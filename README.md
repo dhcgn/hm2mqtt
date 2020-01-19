@@ -19,6 +19,19 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 1. Set up an Broker e.g. [eclipse-mosquitto](https://registry.hub.docker.com/_/eclipse-mosquitto/)
 1. Set up [openHAB](https://registry.hub.docker.com/r/openhab/openhab)
 1. Copy arm executable to `/tmp/`
+1. Set up configuration
+1. Run executable in background
+
+## Configuration
+
+```json
+{
+    "ListenerPort": 8777,
+    "InterfaceId": 1,
+    "HomematicUrl": "http://localhost:2001/",
+    "BrokerUrl": "tcp://192.168.1.100:1883"
+}
+```
 
 ## Running
 
