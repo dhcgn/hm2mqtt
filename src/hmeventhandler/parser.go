@@ -3,6 +3,7 @@ package hmeventhandler
 import (
 	"bytes"
 	"encoding/xml"
+	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
 	"golang.org/x/net/html/charset"
 	"log"
 )
@@ -11,14 +12,7 @@ type internalEvent struct {
 	MembersInnerXml string `xml:",innerxml"`
 }
 
-type event struct {
-	MethodName   string
-	SerialNumber string
-	Type         string
-	DataValue    string
-}
-
-func parseEventMultiCall(content string) ([]event, error) {
+func parseEventMultiCall(content string) ([]shared.Event, error) {
 	reader := bytes.NewReader([]byte(content))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
@@ -32,10 +26,10 @@ func parseEventMultiCall(content string) ([]event, error) {
 		return nil, err
 	}
 
-	var events []event
+	var events []shared.Event
 	for i := range v.Methods {
 		serialNumber, what := extractData(v.Methods[i].MembersInnerXml)
-		event := event{
+		event := shared.Event{
 			MethodName:   extractMethodName(v.Methods[i].MembersInnerXml),
 			SerialNumber: serialNumber,
 			Type:         what,

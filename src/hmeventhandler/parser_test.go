@@ -1,6 +1,7 @@
 package hmeventhandler
 
 import (
+	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
 	"reflect"
 	"testing"
 )
@@ -189,53 +190,26 @@ func getTestData(testCase string) string {
 }
 
 func Test_parseEventMultiCall(t *testing.T) {
-
 	type args struct {
 		content string
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    []event
+		want    []shared.Event
 		wantErr bool
 	}{
-		{name: "multiple events", args: struct{ content string }{content: getTestData("standard")}, want: []event{
+		{name: "multiple events", args: struct{ content string }{content: getTestData("standard")}, want: []shared.Event{
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "FAULT_REPORTING", DataValue: "0"},
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "BATTERY_STATE", DataValue: "2.500000"},
 			{MethodName: "event", SerialNumber: "JEQ000000:0", Type: "UNREACH", DataValue: "1"},
 		}},
-		{name: "multiple events iso-8859-1", args: struct{ content string }{content: getTestData("iso-8859-1")}, want: []event{
+		{name: "multiple events iso-8859-1", args: struct{ content string }{content: getTestData("iso-8859-1")}, want: []shared.Event{
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "FAULT_REPORTING", DataValue: "0"},
 			{MethodName: "event", SerialNumber: "NEQ0000000:4", Type: "BATTERY_STATE", DataValue: "2.500000"},
 			{MethodName: "event", SerialNumber: "JEQ000000:0", Type: "UNREACH", DataValue: "1"},
 		}},
 		{name: "multiple events iso-8859-1", args: struct{ content string }{content: getTestData("defect")}, wantErr: true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := parseEventMultiCall(tt.args.content)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("parseEventMultiCall() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("parseEventMultiCall() got = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_parseEventMultiCall1(t *testing.T) {
-	type args struct {
-		content string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    []event
-		wantErr bool
-	}{
-		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

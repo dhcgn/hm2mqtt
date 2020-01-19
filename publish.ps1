@@ -23,7 +23,7 @@ if ((Get-Command Go -ErrorAction Ignore) -eq $null) {
 }
 
 $appName = "GoHomeMaticMqtt"
-$version = "0.0.0"
+$version = "0.0.1"
 $publishFolder = "publish"
 $debugFolder = "debug"
 $compressPublish = $false

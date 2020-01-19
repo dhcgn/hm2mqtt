@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
+	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmclient"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmeventhandler"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmlistener"
@@ -17,16 +19,22 @@ var (
 	version = "undef"
 )
 
+const (
+	applicationName = "GoHomeMaticMqttPlugin"
+)
+
 func main() {
+	fmt.Println(applicationName)
 	fmt.Println("Version:", version)
+	fmt.Println("Project URL: https://github.com/dhcgn/GoHomeMaticMqttPlugin ")
 
-	log.Println("Starting")
-
-	config := readConfig()
+	config := shared.ReadConfig()
 
 	events := make(chan string, 1000)
 	ticker := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
+
+	mqttHandler.Init(config)
 
 	go func() { hmeventhandler.UploadLoop(events) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
@@ -53,7 +61,7 @@ func statsLoop(tick <-chan time.Time, events chan string) {
 	}
 }
 
-func syncLoop(tick <-chan time.Time, config *config) {
+func syncLoop(tick <-chan time.Time, config *shared.Configuration) {
 	if runtime.GOOS == "windows" {
 		log.Println("Skipped on windows")
 		return
@@ -71,5 +79,5 @@ func syncLoop(tick <-chan time.Time, config *config) {
 func cleanup() {
 	log.Println("Starting Cleanup")
 
-	// TODO unsubscript!
+	mqttHandler.Disconnect()
 }
