@@ -17,10 +17,18 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 ## Getting Started
 
 1. Set up an Broker e.g. [eclipse-mosquitto](https://registry.hub.docker.com/_/eclipse-mosquitto/)
-1. Set up [openHAB](https://registry.hub.docker.com/r/openhab/openhab)
+1. Set up [openHAB docker](https://registry.hub.docker.com/r/openhab/openhab)
 1. Copy arm executable to `/tmp/`
 1. Set up configuration
 1. Run executable in background
+
+## Parameter
+
+```plain
+ Usage of GoHomeMaticMqtt:
+  -config string
+        Overrides the path to the config file
+```
 
 ## Configuration
 
@@ -56,3 +64,15 @@ nohup /tmp/GoHomeMaticMqtt_linux_arm > /tmp/mqtt.log &
 2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_MONTH with value:     1        644.113µs
 2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_YEAR with value:      0        655.832µs
 ```
+
+## Files
+
+- Config  
+  /usr/local/etc/config/mqtt.json
+- Executable  
+  /usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm
+- 
+
+## Thanks to XML-API
+
+https://github.com/jens-maus/XML-API/blob/master/update_script
