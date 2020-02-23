@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
 	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
@@ -17,6 +18,7 @@ import (
 
 var (
 	version = "undef"
+	flagTokenPtr   = flag.String("config", ``, `Overrides the path to the config file`)
 )
 
 const (
@@ -28,7 +30,9 @@ func main() {
 	fmt.Println("Version:", version)
 	fmt.Println("Project URL: https://github.com/dhcgn/GoHomeMaticMqttPlugin ")
 
-	config := shared.ReadConfig()
+	flag.Parse()
+
+	config := shared.ReadConfig(*flagTokenPtr)
 
 	events := make(chan string, 1000)
 	ticker := time.NewTicker(1 * time.Minute)
