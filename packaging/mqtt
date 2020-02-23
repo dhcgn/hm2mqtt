@@ -1,0 +1,23 @@
+#!/bin/sh
+
+WWW_DIR=/etc/config/addons/www/mqtt
+CONFIG_URL=/addons/mqtt/
+
+case "$1" in
+""|start)
+    /usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm -config /usr/local/etc/config/mqtt.json
+  ;;
+info)
+  VER=`cat ${WWW_DIR}/VERSION`
+  echo "Info: <b>MQTT CCU Addon</b><br>"
+  echo "Info: <a href='https://github.com/dhcgn/GoHomeMaticMqttPlugin'>https://github.com/dhcgn/GoHomeMaticMqttPlugin</a>"
+  echo "Version: $(cat ${WWW_DIR}/VERSION)"
+  echo "Name: Go HomeMatic Mqtt Plugin"
+  echo "Operations: uninstall"
+  echo "Config-Url: ${CONFIG_URL}"
+  echo "Update: ${CONFIG_URL}/update-check.cgi"
+  ;;
+uninstall)
+  rm -rf $WWW_DIR
+  ;;
+esac
