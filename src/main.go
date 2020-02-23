@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmclient"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmeventhandler"
 	"github.com/dhcgn/gohomematicmqttplugin/src/hmlistener"
+	"github.com/dhcgn/gohomematicmqttplugin/src/userConfigHttpServer"
+	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
+	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
 	"log"
 	"os"
 	"os/signal"
@@ -44,6 +45,7 @@ func main() {
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
 	go func() { syncLoop(ticker.C, config) }()
 	go func() { statsLoop(tickerStatus.C, events) }()
+	go func() { userConfigHttpServer.Start() }()
 
 	c := make(chan os.Signal)
 	cleanupDone := make(chan os.Signal)

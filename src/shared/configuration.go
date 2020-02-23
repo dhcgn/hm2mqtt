@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 )
 
+var Config Configuration;
+
 type Configuration struct {
 	ListenerPort int
 	InterfaceId  int
@@ -47,5 +49,6 @@ func ReadConfig(overriddenPath string) *Configuration {
 	c := Configuration{}
 	json.Unmarshal(dat, &c)
 
+	Config = c
 	return &c
 }
