@@ -16,7 +16,9 @@ const forms = `
 <html lang="en">
 <body>
 {{if .Success}}
+	<meta http-equiv="refresh" content="1"/>
     <h1>Saved!</h1>
+	<p>Page will be reloaded in one second.</p>
 {{else}}
     <h1>HomeMatic MQTT Plugin</h1>
 	<p>More information: <a href="https://github.com/dhcgn/GoHomeMaticMqttPlugin">https://github.com/dhcgn/GoHomeMaticMqttPlugin</a></p>
@@ -73,17 +75,18 @@ func Start(){
 			return
 		}
 
-		details := shared.Configuration{
+		c := shared.Configuration{
 			ListenerPort: port ,
 			InterfaceId: interfaceId,
 			HomematicUrl: r.FormValue("HomematicUrl"),
 			BrokerUrl: r.FormValue("BrokerUrl"),
 		}
 
-		// do something with details
-		_ = details
+		shared.UpdateConfiguration(c)
 
 		tmpl.Execute(w, struct{ Success bool }{true})
+
+		tmpl , _ = template.New("foo").Parse(createTemplate())
 	})
 
 	port := 8070

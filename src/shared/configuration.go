@@ -9,6 +9,7 @@ import (
 )
 
 var Config Configuration;
+var ConfigFilePath string;
 
 type Configuration struct {
 	ListenerPort int
@@ -17,15 +18,26 @@ type Configuration struct {
 	BrokerUrl    string
 }
 
+func UpdateConfiguration(c Configuration) {
+	Config = c
+
+	f, _ := os.Create(ConfigFilePath)
+	defer f.Close()
+	j, _ := json.MarshalIndent(c, "", "   ")
+	f.Write(j)
+	f.Sync()
+}
+
 func ReadConfig(overriddenPath string) *Configuration {
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	configPath := filepath.Join(dir, "config.json")
+	ConfigFilePath = filepath.Join(dir, "config.json")
 	configSamplePath := filepath.Join(dir, "config.sample.json")
 
 	if overriddenPath != "" {
-		configPath = overriddenPath
+		ConfigFilePath = overriddenPath
 		configSamplePath = overriddenPath
 	}
+
 
 	if _, err := os.Stat(configSamplePath); os.IsNotExist(err) {
 		newConfig := Configuration{
@@ -41,11 +53,11 @@ func ReadConfig(overriddenPath string) *Configuration {
 		f.Sync()
 	}
 
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		log.Fatalf("No config at %v", configPath)
+	if _, err := os.Stat(ConfigFilePath); os.IsNotExist(err) {
+		log.Fatalf("No config at %v", ConfigFilePath)
 	}
 
-	dat, _ := ioutil.ReadFile(configPath)
+	dat, _ := ioutil.ReadFile(ConfigFilePath)
 	c := Configuration{}
 	json.Unmarshal(dat, &c)
 
