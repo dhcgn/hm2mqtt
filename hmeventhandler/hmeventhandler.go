@@ -1,7 +1,7 @@
 package hmeventhandler
 
 import (
-	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
+	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
 )
 
 //UploadLoop parse incoming messages from chan to Events and end them via mqtt to the broker

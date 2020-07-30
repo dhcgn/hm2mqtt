@@ -3,7 +3,7 @@ package hmeventhandler
 import (
 	"bytes"
 	"encoding/xml"
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"golang.org/x/net/html/charset"
 	"log"
 )

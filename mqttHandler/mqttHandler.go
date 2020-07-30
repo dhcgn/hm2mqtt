@@ -1,7 +1,7 @@
 package mqttHandler
 
 import (
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"time"
@@ -16,9 +16,9 @@ var (
 	c    mqtt.Client
 )
 
-func Init(config *shared.Configuration){
-	log.Println("Connect to Broker", config.BrokerUrl, "as",ClientID )
-	opts= mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(ClientID).SetAutoReconnect(AutoReconnect)
+func Init(config *shared.Configuration) {
+	log.Println("Connect to Broker", config.BrokerUrl, "as", ClientID)
+	opts = mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(ClientID).SetAutoReconnect(AutoReconnect)
 	c = mqtt.NewClient(opts)
 
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
@@ -26,12 +26,11 @@ func Init(config *shared.Configuration){
 	}
 }
 
-func Disconnect(){
+func Disconnect() {
 	log.Println("Disconnect from Broker")
 
 	c.Disconnect(100)
 }
-
 
 func SendToBroker(e shared.Event) {
 	start := time.Now()
@@ -50,4 +49,3 @@ func SendToBroker(e shared.Event) {
 		time.Sleep(500 * time.Millisecond)
 	}
 }
-

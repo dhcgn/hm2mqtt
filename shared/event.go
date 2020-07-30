@@ -6,4 +6,3 @@ type Event struct {
 	Type         string
 	DataValue    string
 }
-

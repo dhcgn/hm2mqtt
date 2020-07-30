@@ -1,7 +1,7 @@
 package hmeventhandler
 
 import (
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"reflect"
 	"testing"
 )

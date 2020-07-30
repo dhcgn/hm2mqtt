@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/src/hmclient"
-	"github.com/dhcgn/gohomematicmqttplugin/src/hmeventhandler"
-	"github.com/dhcgn/gohomematicmqttplugin/src/hmlistener"
-	"github.com/dhcgn/gohomematicmqttplugin/src/userConfigHttpServer"
-	"github.com/dhcgn/gohomematicmqttplugin/src/mqttHandler"
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/hmclient"
+	"github.com/dhcgn/gohomematicmqttplugin/hmeventhandler"
+	"github.com/dhcgn/gohomematicmqttplugin/hmlistener"
+	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/userConfigHttpServer"
 	"log"
 	"os"
 	"os/signal"
@@ -18,8 +18,8 @@ import (
 )
 
 var (
-	version = "undef"
-	flagTokenPtr   = flag.String("config", ``, `Overrides the path to the config file`)
+	version      = "undef"
+	flagTokenPtr = flag.String("config", ``, `Overrides the path to the config file`)
 )
 
 const (

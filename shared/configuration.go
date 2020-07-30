@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 )
 
-var Config Configuration;
-var ConfigFilePath string;
+var Config Configuration
+var ConfigFilePath string
 
 type Configuration struct {
 	ListenerPort int
@@ -37,7 +37,6 @@ func ReadConfig(overriddenPath string) *Configuration {
 		ConfigFilePath = overriddenPath
 		configSamplePath = overriddenPath
 	}
-
 
 	if _, err := os.Stat(configSamplePath); os.IsNotExist(err) {
 		newConfig := Configuration{

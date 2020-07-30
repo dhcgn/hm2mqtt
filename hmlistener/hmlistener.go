@@ -2,7 +2,7 @@ package hmlistener
 
 import (
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/src/server"
+	"github.com/dhcgn/gohomematicmqttplugin/server"
 	"io/ioutil"
 	"log"
 	"net/http"

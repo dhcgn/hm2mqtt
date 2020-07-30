@@ -2,8 +2,8 @@ package userConfigHttpServer
 
 import (
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/src/server"
-	"github.com/dhcgn/gohomematicmqttplugin/src/shared"
+	"github.com/dhcgn/gohomematicmqttplugin/server"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"html/template"
 	"log"
 	"net/http"
@@ -51,9 +51,8 @@ func createTemplate() string {
 	return r
 }
 
-
-func Start(){
-	tmpl , _ := template.New("foo").Parse(createTemplate())
+func Start() {
+	tmpl, _ := template.New("foo").Parse(createTemplate())
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -76,22 +75,21 @@ func Start(){
 		}
 
 		c := shared.Configuration{
-			ListenerPort: port ,
-			InterfaceId: interfaceId,
+			ListenerPort: port,
+			InterfaceId:  interfaceId,
 			HomematicUrl: r.FormValue("HomematicUrl"),
-			BrokerUrl: r.FormValue("BrokerUrl"),
+			BrokerUrl:    r.FormValue("BrokerUrl"),
 		}
 
 		shared.UpdateConfiguration(c)
 
 		tmpl.Execute(w, struct{ Success bool }{true})
 
-		tmpl , _ = template.New("foo").Parse(createTemplate())
+		tmpl, _ = template.New("foo").Parse(createTemplate())
 	})
 
 	port := 8070
 	srv := server.New(mux, port)
-	log.Println("Starting http server for user configuration in port",port )
+	log.Println("Starting http server for user configuration in port", port)
 	srv.ListenAndServe()
 }
-
