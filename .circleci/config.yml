@@ -44,7 +44,7 @@ jobs:
             - go-build-cache-v1-{{ .Branch }}-{{ .Revision }}
             - go-build-cache-v1-{{ .Branch }}
             - go-build-cache-v1
-      - run: cd src && go test -v ./...
+      - run: go test -v ./...
       - save_cache:
           key: go-build-cache-v1-{{ .Branch }}-{{ .Revision }}
           paths:
