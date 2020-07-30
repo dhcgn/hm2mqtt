@@ -1,9 +1,9 @@
 module github.com/dhcgn/gohomematicmqttplugin
 
-go 1.13
+go 1.14
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.2.0
-	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
-	golang.org/x/text v0.3.2 // indirect
+	golang.org/x/net v0.0.0-20200707034311-ab3426394381
+	golang.org/x/text v0.3.3 // indirect
 )
