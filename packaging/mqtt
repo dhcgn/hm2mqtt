@@ -1,23 +1,85 @@
 #!/bin/sh
 
-WWW_DIR=/etc/config/addons/www/mqtt
-CONFIG_URL=/addons/mqtt/
+PIDFILE=/var/run/mqtt
+
+DAEMON=/usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm 
+DAEMON_ARGS="-config /usr/local/etc/config/mqtt.json"
+
+log() {
+  local now=$(date)
+  echo "[$now] $@"
+  echo "[$now] $@" >> /var/log/mqtt.log
+}
+
+do_start()
+{
+  log "starting mqtt ..."
+  start-stop-daemon --start --quiet --make-pidfile --background --nicelevel -10 --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS
+  sleep 1
+  if [ -f "$PIDFILE" ]; then
+    PID=$(cat $PIDFILE)
+    log "mqtt started (pid=$PID)"
+  else
+    log "mqtt started failed"
+  fi	
+}
+
+do_stop()
+{
+  log "stopping mqtt ..."
+	start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE
+	if [ -f "$PIDFILE" ]; then
+		rm $PIDFILE
+	fi		
+  log "mqtt stopped"
+}
+
+check_status()
+{
+  if [ ! -f "$PIDFILE" ]; then
+    log "no pid file $PIDFILE"
+    return -1
+  fi
+  local ps=$(cat $PIDFILE)
+  if [ -z "$ps" ]; then
+    log "pid file $PIDFILE empty"
+    return -2
+  fi
+  if [ ! -d "/proc/$ps" ]; then
+    log "no running process with pid $ps"
+    return -3
+  fi
+  log "mqtt is running (pid=$ps)"
+  return 0
+}
 
 case "$1" in
 ""|start)
-    /usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm -config /usr/local/etc/config/mqtt.json
+    log "Start"
+    do_start
   ;;
 info)
-  VER=`cat ${WWW_DIR}/VERSION`
-  echo "Info: <b>MQTT CCU Addon</b><br>"
+  echo "Info: <b>GoHomeMaticMqtt</b><br>"
   echo "Info: <a href='https://github.com/dhcgn/GoHomeMaticMqttPlugin'>https://github.com/dhcgn/GoHomeMaticMqttPlugin</a>"
-  echo "Version: $(cat ${WWW_DIR}/VERSION)"
-  echo "Name: Go HomeMatic Mqtt Plugin"
-  echo "Operations: uninstall"
-  echo "Config-Url: ${CONFIG_URL}"
-  echo "Update: ${CONFIG_URL}/update-check.cgi"
   ;;
+stop)
+  do_stop
+  ;;
+restart)
+  do_stop
+  sleep 1
+  do_start
+  ;;    
 uninstall)
-  rm -rf $WWW_DIR
   ;;
+status)
+  check_status
+  exit $?
+  ;;  
+  *)
+    echo "usage: mqtt [info|start|stop|restart|uninstall|status]"
+	  exit 1
+    ;;
 esac
+
+exit 0
