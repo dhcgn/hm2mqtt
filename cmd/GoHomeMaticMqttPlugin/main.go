@@ -10,12 +10,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/dhcgn/gohomematicmqttplugin/cmdhandler"
+
 	"github.com/dhcgn/gohomematicmqttplugin/hmclient"
 	"github.com/dhcgn/gohomematicmqttplugin/hmeventhandler"
 	"github.com/dhcgn/gohomematicmqttplugin/hmlistener"
 	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
 	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"github.com/dhcgn/gohomematicmqttplugin/userConfigHttpServer"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 var (
@@ -36,11 +39,13 @@ func main() {
 
 	config := shared.ReadConfig(*flagTokenPtr)
 
+	cmd := cmdhandler.NewCmdHandler()
+
 	events := make(chan string, 1000)
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
 
-	mqttHandler.Init(config)
+	mqttHandler.Init(config, func(client mqtt.Client, msg mqtt.Message) { cmd.AddCmd(msg) })
 
 	go func() { hmeventhandler.UploadLoop(events) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()

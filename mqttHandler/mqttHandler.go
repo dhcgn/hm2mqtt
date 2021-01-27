@@ -1,22 +1,31 @@
 package mqttHandler
 
 import (
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"time"
+
+	"github.com/denisbrodbeck/machineid"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-const ClientID = "HomeMaticMqttPlugin"
-const AutoReconnect = true
+// TOOO Change Impl to https://github.com/eclipse/paho.mqtt.golang/blob/43c9c445a89e7dca549a9bd445e3553dade9a2bc/cmd/docker/subscriber/main.go#L80
+
+const (
+	AutoReconnect   = true
+	subsribeChannel = "hm/cmd/#"
+)
 
 var (
 	// TODO Set Last Will
 	opts *mqtt.ClientOptions
 	c    mqtt.Client
+
+	id, err  = machineid.ProtectedID("HomeMaticMqttPlugin")
+	ClientID = "HomeMaticMqttPlugin_" + id[0:16]
 )
 
-func Init(config *shared.Configuration) {
+func Init(config *shared.Configuration, handler mqtt.MessageHandler) {
 	log.Println("Connect to Broker", config.BrokerUrl, "as", ClientID)
 	opts = mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(ClientID).SetAutoReconnect(AutoReconnect)
 	c = mqtt.NewClient(opts)
@@ -24,6 +33,17 @@ func Init(config *shared.Configuration) {
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
+
+	t := c.Subscribe(subsribeChannel, 1, handler)
+	go func() {
+		<-t.Done()
+		if t.Error() != nil {
+			log.Println("ERROR SUBSCRIBING: %s\n", t.Error())
+		} else {
+			log.Println("subscribed to", subsribeChannel)
+		}
+	}()
+
 }
 
 func Disconnect() {
