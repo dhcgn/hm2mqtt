@@ -38,7 +38,7 @@ func Init(config *shared.Configuration, handler mqtt.MessageHandler) {
 	go func() {
 		<-t.Done()
 		if t.Error() != nil {
-			log.Println("ERROR SUBSCRIBING: %s\n", t.Error())
+			log.Println("ERROR SUBSCRIBING:", t.Error())
 		} else {
 			log.Println("subscribed to", subsribeChannel)
 		}
