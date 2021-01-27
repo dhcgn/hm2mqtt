@@ -4,7 +4,7 @@ import (
 	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
 )
 
-//UploadLoop parse incoming messages from chan to Events and end them via mqtt to the broker
+//UploadLoop parse incoming messages from chan to Events and send them via mqtt to the broker
 func UploadLoop(messages <-chan string) {
 	for {
 		stringBody := <-messages
