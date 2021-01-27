@@ -41,10 +41,17 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 }
 ```
 
+## MQTT Client
+
+![image](https://user-images.githubusercontent.com/6566207/106018455-d1381400-60c1-11eb-8201-16bcfb69bdab.png)
+
+
 ## Running
 
+> Add to `rc script` soon
+
 ```bash
-nohup /tmp/GoHomeMaticMqtt_linux_arm > /tmp/mqtt.log &
+nohup /tmp/GoHomeMaticMqtt_linux_arm -config config.json > /tmp/mqtt.log &
 ```
 
 ```
@@ -53,16 +60,6 @@ nohup /tmp/GoHomeMaticMqtt_linux_arm > /tmp/mqtt.log &
 2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/VALVE_STATE with value:          0        835.728µs
 2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/BOOST_STATE with value:          0        862.655µs
 2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/ACTUAL_TEMPERATURE with value:  23.700000 843.123µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/SET_TEMPERATURE with value:     18.000000 784.269µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_TEMPERATURE with value:    5.000000 856.509µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_START_TIME with value:     0        665.051µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_START_DAY with value:      1        643.958µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_START_MONTH with value:    1        670.78µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_START_YEAR with value:     0        653.801µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_TIME with value:      0        667.134µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_DAY with value:       1        656.353µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_MONTH with value:     1        644.113µs
-2020/01/13 22:22:12 OK:    topic: hm/KEQ0000000:4/PARTY_STOP_YEAR with value:      0        655.832µs
 ```
 
 ## Files
@@ -71,7 +68,6 @@ nohup /tmp/GoHomeMaticMqtt_linux_arm > /tmp/mqtt.log &
   /usr/local/etc/config/mqtt.json
 - Executable  
   /usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm
-- 
 
 ## Thanks to XML-API
 
