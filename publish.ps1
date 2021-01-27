@@ -69,7 +69,7 @@ foreach ($item in $platforms ) {
         $extension = $null
     }
         
-    $buildCode = (Join-Path -Path $rootFolder "src")
+    $buildCode = (Join-Path -Path $rootFolder "cmd\GoHomeMaticMqttPlugin\")
    
     $count += 1
     Write-Progress -Activity ("Build $($item.GOOS) $($item.GOARCH)") -Status "Build publish" -PercentComplete ([Double]$count / $maxCount * 100)
@@ -78,6 +78,9 @@ foreach ($item in $platforms ) {
     $executeExpression = "go build -ldflags ""-s -w -X main.version={0}"" -trimpath -o {1} {2}" -f $version, $buildOutput, $buildCode 
     Write-Host "Execute", $executeExpression -ForegroundColor Green
     Invoke-Expression $executeExpression
+    if ($LASTEXITCODE -ne 0){
+        Write-Host "ERROR" -ForegroundColor Red
+    }
 
     if ($compressPublish) {
         $count += 1
@@ -95,6 +98,9 @@ foreach ($item in $platforms ) {
     $executeExpression = "go build -ldflags ""-X main.version={0}"" -o {1} {2}" -f $version, $buildOutput, $buildCode 
     Write-Host "Execute", $executeExpression -ForegroundColor Green
     Invoke-Expression $executeExpression
+    if ($LASTEXITCODE -ne 0){
+        Write-Host "ERROR" -ForegroundColor Red
+    }
 }
 
 Write-Host "Done!" -ForegroundColor Green
