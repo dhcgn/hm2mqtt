@@ -41,6 +41,10 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 }
 ```
 
+## openHAP
+
+![](https://user-images.githubusercontent.com/6566207/107683288-aba23180-6ca1-11eb-8da5-2bf80df1f850.png)
+
 ## MQTT Client
 
 ![image](https://user-images.githubusercontent.com/6566207/106018455-d1381400-60c1-11eb-8201-16bcfb69bdab.png)

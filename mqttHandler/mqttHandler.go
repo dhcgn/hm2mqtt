@@ -13,7 +13,7 @@ import (
 
 const (
 	AutoReconnect   = true
-	subsribeChannel = "hm/cmd/#"
+	subsribeChannel = "hm/set/#"
 )
 
 var (

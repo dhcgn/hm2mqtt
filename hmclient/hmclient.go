@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 //GetDevices request all device from the CCU
@@ -19,6 +20,52 @@ func GetDevices() string {
 	client := &http.Client{}
 	resp, _ := client.Do(req)
 	b, _ := ioutil.ReadAll(resp.Body)
+	return string(b)
+}
+
+func SetState(address string, valueKey string, value string, homematicUrl string) string {
+	body := `<?xml version="1.0"?>
+<methodCall>
+    <methodName>setValue</methodName>
+    <params>
+        <param>
+            <value>%v</value>
+        </param>
+        <param>
+            <value>%v</value>
+        </param>
+        <param>
+            <value>%v</value>
+        </param>
+    </params>
+</methodCall>`
+
+	body = fmt.Sprintf(body, address, valueKey, value)
+
+	fmt.Println(body)
+
+	req, e := http.NewRequest("POST", homematicUrl, bytes.NewReader([]byte(body)))
+	if e != nil {
+		log.Println("SetState ERROR:", e)
+		return ""
+	}
+	req.Header.Set("Content-Type", "text/xml")
+
+	client := &http.Client{}
+	resp, e := client.Do(req)
+
+	if e != nil {
+		log.Println("SetState ERROR:", e)
+		return ""
+	}
+
+	b, _ := ioutil.ReadAll(resp.Body)
+	if strings.Contains(string(b), "faultCode") {
+		log.Println("SetState Response ERROR")
+	} else {
+		log.Println("SetState Response OK")
+	}
+
 	return string(b)
 }
 

@@ -39,7 +39,7 @@ func main() {
 
 	config := shared.ReadConfig(*flagTokenPtr)
 
-	cmd := cmdhandler.NewCmdHandler()
+	cmd := cmdhandler.NewCmdHandler(config.HomematicUrl)
 
 	events := make(chan string, 1000)
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
