@@ -1,0 +1,6 @@
+{
+   "ListenerPort": 8777,
+   "InterfaceId": 2,
+   "HomematicUrl": "http://127.0.0.1:2001/",
+   "BrokerUrl": "tcp://192.168.10.31:1883"
+}
