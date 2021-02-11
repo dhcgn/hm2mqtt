@@ -50,6 +50,10 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 
 > Add to `rc script` soon
 
+/usr/local/etc/config/rc.d/mqtt
+
+or
+
 ```bash
 nohup /tmp/GoHomeMaticMqtt_linux_arm -config config.json > /tmp/mqtt.log &
 ```
