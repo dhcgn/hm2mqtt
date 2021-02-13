@@ -9,37 +9,39 @@
 
 ## Status
 
-The prototyp can send events and subsribe to commands. So I can control all devices with openHAB. But a lot comfort feature missing at the moment. 
+The prototype can send events and subscribe to commands from a mqtt broker. So I can control all my devices with openHAB. Keep in mind, that a lot comfort feature missing at the moment.
 
 ## Introduction
 
-The project enables you to control your HomeMatic devices with any mqtt compatible system, e.g. openHAB or serveral apps.
+The project enables you to control your Homematic devices with any mqtt compatible system, e.g. openHAB or several apps.
 
 ![hm2mqtt Overview HM only](docs/images/hm2mqtt%20-%20Overview%20HM%20only.jpg)
 
-*hm2mqtt* is a nativ arm application created from Go. Because Go is statically linked all dependecies are included.
+*hm2mqtt* is a native arm application created from Go. Because Go is statically linked all dependencies are included.
 
-With this you can perfectly integrate your homematik setup with other systems which tend to use mqtt.
+With this you can perfectly integrate your Homematic setup with other systems which tend to use mqtt.
 
 ### Feature Set
 
 - Route all internal RPC events to a mqtt broker
-- Subsribe to commands from a mqtt broker
-- Host a website on te CCU3 for configuration
+- Subscribe to commands from a mqtt broker
+- Host a website on tte CCU3 for configuration, setup and logging
 - Installer for the CCU3 Web Interface for easy setup
 - Optional automatic update
 
-### Infrastruture Sample
+### Infrastructure Sample
 
 ![hm2mqtt Overview](docs/images/hm2mqtt%20-%20Overview.jpg)
 
-### Trival openHAP Sample
+### Trivial openHAP Sample
 
 ![Screenshot](https://i.ibb.co/PWphmXK/screenshot.png")
 
 ## Getting Started
 
-1. Set up an Broker e.g. [eclipse-mosquitto](https://registry.hub.docker.com/_/eclipse-mosquitto/)
+> This is only for testing purpose, to persist hm2mqtt use the installer.
+
+1. Set up a mqtt Broker e.g. [eclipse-mosquitto](https://registry.hub.docker.com/_/eclipse-mosquitto/)
 1. Set up [openHAB docker](https://registry.hub.docker.com/r/openhab/openhab)
 1. Copy arm executable to `/tmp/`
 1. Set up configuration
@@ -64,11 +66,13 @@ With this you can perfectly integrate your homematik setup with other systems wh
 }
 ```
 
-## openHAP
+## openHAB
 
 ![](https://user-images.githubusercontent.com/6566207/107683288-aba23180-6ca1-11eb-8da5-2bf80df1f850.png)
 
 ## MQTT Client
+
+On Windows go to the Store and download [MQTT-Explorer](https://www.microsoft.com/store/productId/9PP8SFM082WD) or [MQTT Box](https://www.microsoft.com/store/productId/9NBLGGH55JZG).
 
 ![image](https://user-images.githubusercontent.com/6566207/106018455-d1381400-60c1-11eb-8201-16bcfb69bdab.png)
 
