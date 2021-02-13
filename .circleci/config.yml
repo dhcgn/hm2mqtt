@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.1.3
 
 defaults: &defaults
   docker:
@@ -54,7 +57,9 @@ jobs:
             go tool cover -html=c.out -o coverage.html
             mv coverage.html /tmp/artifacts
       - store_artifacts:
-          path: /tmp/artifacts            
+          path: /tmp/artifacts
+      - codecov/upload:
+          file: /tmp/artifacts/c.out
       - save_cache:
           key: go-build-cache-v1-{{ .Branch }}-{{ .Revision }}
           paths:
