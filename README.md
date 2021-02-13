@@ -1,16 +1,39 @@
-# GoHomeMaticMqttPlugin
+# hm2mqtt
 
-[![CircleCI](https://circleci.com/gh/dhcgn/GoHomeMaticMqttPlugin.svg?style=svg)](https://circleci.com/gh/dhcgn/GoHomeMaticMqttPlugin)
-[![Go Report Card](https://goreportcard.com/badge/github.com/dhcgn/GoHomeMaticMqttPlugin)](https://goreportcard.com/report/github.com/dhcgn/GoHomeMaticMqttPlugin)
-[![Maintainability](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/maintainability)](https://codeclimate.com/github/dhcgn/GoHomeMaticMqttPlugin/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/test_coverage)](https://codeclimate.com/github/dhcgn/GoHomeMaticMqttPlugin/test_coverage)
+[![CircleCI](https://circleci.com/gh/dhcgn/hm2mqtt.svg?style=svg)](https://circleci.com/gh/dhcgn/hm2mqtt)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dhcgn/hm2mqtt)](https://goreportcard.com/report/github.com/dhcgn/hm2mqtt)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/maintainability)](https://codeclimate.com/github/dhcgn/hm2mqtt/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/test_coverage)](https://codeclimate.com/github/dhcgn/hm2mqtt/test_coverage)
 
 :exclamation: Not yet ready for use!
 
+## Status
+
+The prototyp can send events and subsribe to commands. So I can control all devices with openHAB. But a lot comfort feature missing at the moment. 
+
 ## Introduction
 
-With this plugin you can use MQTT to watch and control the HomeMatic CCU3.
-And with openHAP you can use **Google Assistent** to control the HomeMatic smart devices.
+The project enables you to control your HomeMatic devices with any mqtt compatible system, e.g. openHAB or serveral apps.
+
+![hm2mqtt Overview HM only](docs/images/hm2mqtt%20-%20Overview%20HM%20only.jpg)
+
+*hm2mqtt* is a nativ arm application created from Go. Because Go is statically linked all dependecies are included.
+
+With this you can perfectly integrate your homematik setup with other systems which tend to use mqtt.
+
+### Feature Set
+
+- Route all internal RPC events to a mqtt broker
+- Subsribe to commands from a mqtt broker
+- Host a website on te CCU3 for configuration
+- Installer for the CCU3 Web Interface for easy setup
+- Optional automatic update
+
+### Infrastruture Sample
+
+![hm2mqtt Overview](docs/images/hm2mqtt%20-%20Overview.jpg)
+
+### Trival openHAP Sample
 
 ![Screenshot](https://i.ibb.co/PWphmXK/screenshot.png")
 
@@ -25,7 +48,7 @@ And with openHAP you can use **Google Assistent** to control the HomeMatic smart
 ## Parameter
 
 ```plain
- Usage of GoHomeMaticMqtt:
+ Usage of hm2mqtt:
   -config string
         Overrides the path to the config file
 ```
