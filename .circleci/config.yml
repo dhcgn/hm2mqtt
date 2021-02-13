@@ -59,6 +59,7 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts
       - codecov/upload:
+          token: $CODECOV_TOKEN 
           file: /tmp/artifacts/c.out
       - save_cache:
           key: go-build-cache-v1-{{ .Branch }}-{{ .Revision }}
