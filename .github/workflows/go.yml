@@ -22,4 +22,12 @@ jobs:
       run: go build -v ./...
 
     - name: Test
-      run: go test -v ./...
+      run: go test -coverprofile c.out ./...
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        files: c.out
+        flags: unittests
+        fail_ci_if_error: true
+        verbose: true
