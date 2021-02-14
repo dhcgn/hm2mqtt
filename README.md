@@ -5,6 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/dhcgn/hm2mqtt)](https://goreportcard.com/report/github.com/dhcgn/hm2mqtt)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/maintainability)](https://codeclimate.com/github/dhcgn/hm2mqtt/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b5dcdb24ef1e6237d397/test_coverage)](https://codeclimate.com/github/dhcgn/hm2mqtt/test_coverage)
+[![codecov](https://codecov.io/gh/dhcgn/hm2mqtt/branch/main/graph/badge.svg?token=LXS768J0H7)](https://codecov.io/gh/dhcgn/hm2mqtt)
 
 :exclamation: Not yet ready for use!
 
