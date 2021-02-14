@@ -26,16 +26,11 @@ jobs:
        go test -coverprofile coverage.out ./...
        go tool cover -html=coverage.out -o coverage.html
     
-    - name: Move
-      run: |
-        mkdir -p /tmp/artifacts
-        mv coverage.out /tmp/artifacts
-        mv coverage.html /tmp/artifacts
-
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: Coverage
+        path: coverage.*
+   
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
-      with:
-        files: coverage.out, coverage.html
-        directory: /tmp/artifacts
-        fail_ci_if_error: true
-        verbose: true
