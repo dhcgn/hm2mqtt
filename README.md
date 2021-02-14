@@ -101,8 +101,10 @@ nohup /tmp/GoHomeMaticMqtt_linux_arm -config config.json > /tmp/mqtt.log &
 
 - Config  
   /usr/local/etc/config/mqtt.json
+- Friendly names mapping for devices
+  /usr/local/etc/config/devies.yaml
 - Executable  
-  /usr/local/etc/config/addons/www/mqtt/GoHomeMaticMqtt_linux_arm
+  /usr/local/etc/config/addons/www/mqtt/hm2mqtt
 
 ## Thanks to XML-API
 
