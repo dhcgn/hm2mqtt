@@ -12,13 +12,13 @@ import (
 
 	"github.com/dhcgn/hm2mqtt/cmdhandler"
 	"github.com/dhcgn/hm2mqtt/friendlyamehandler"
+	"github.com/dhcgn/hm2mqtt/mqtthandler"
+	"github.com/dhcgn/hm2mqtt/userconfighttpserver"
 
 	"github.com/dhcgn/hm2mqtt/hmclient"
 	"github.com/dhcgn/hm2mqtt/hmeventhandler"
 	"github.com/dhcgn/hm2mqtt/hmlistener"
-	"github.com/dhcgn/hm2mqtt/mqttHandler"
 	"github.com/dhcgn/hm2mqtt/shared"
-	"github.com/dhcgn/hm2mqtt/userConfigHttpServer"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -40,20 +40,20 @@ func main() {
 
 	config := shared.ReadConfig(*flagTokenPtr)
 
-	cmd := cmdhandler.NewCmdHandler(config.HomematicUrl)
+	cmd := cmdhandler.NewCmdHandler(config.HomematicURL)
 	friendlyName := friendlyamehandler.New()
 
 	events := make(chan string, 1000)
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
 
-	mqttHandler := mqttHandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.SendNewStateToHomematic(msg) })
+	mqttHandler := mqtthandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.SendNewStateToHomematic(msg) })
 
 	go func() { hmeventhandler.HandlingIncomingEventsLoop(events, mqttHandler, friendlyName) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
 	go func() { refreshSubscriptionLoop(tickerRefreshSubscription.C, config) }()
 	go func() { statsLoop(tickerStatus.C, events) }()
-	go func() { userConfigHttpServer.StartWebService() }()
+	go func() { userconfighttpserver.StartWebService() }()
 
 	c := make(chan os.Signal)
 	cleanupDone := make(chan os.Signal)
@@ -82,15 +82,15 @@ func refreshSubscriptionLoop(tick <-chan time.Time, config *shared.Configuration
 	}
 
 	// devices <- client.GetDevices()
-	hmclient.Init(config.ListenerPort, config.InterfaceId, config.HomematicUrl)
+	hmclient.Init(config.ListenerPort, config.InterfaceID, config.HomematicURL)
 
 	for range tick {
-		hmclient.Init(config.ListenerPort, config.InterfaceId, config.HomematicUrl)
+		hmclient.Init(config.ListenerPort, config.InterfaceID, config.HomematicURL)
 		// devices <- client.GetDevices()
 	}
 }
 
-func cleanup(mqttHandler mqttHandler.Handle) {
+func cleanup(mqttHandler mqtthandler.Handle) {
 	log.Println("Starting Cleanup")
 
 	mqttHandler.Disconnect()

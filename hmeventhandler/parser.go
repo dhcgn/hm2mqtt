@@ -10,7 +10,7 @@ import (
 )
 
 type internalEvent struct {
-	MembersInnerXml string `xml:",innerxml"`
+	MembersInnerXML string `xml:",innerxml"`
 }
 
 func parseEventMultiCall(content string) ([]shared.Event, error) {
@@ -29,12 +29,12 @@ func parseEventMultiCall(content string) ([]shared.Event, error) {
 
 	var events []shared.Event
 	for i := range v.Methods {
-		serialNumber, what := extractData(v.Methods[i].MembersInnerXml)
+		serialNumber, what := extractData(v.Methods[i].MembersInnerXML)
 		event := shared.Event{
-			MethodName:   extractMethodName(v.Methods[i].MembersInnerXml),
+			MethodName:   extractMethodName(v.Methods[i].MembersInnerXML),
 			SerialNumber: serialNumber,
 			Type:         what,
-			DataValue:    extractDataValue(v.Methods[i].MembersInnerXml),
+			DataValue:    extractDataValue(v.Methods[i].MembersInnerXML),
 		}
 		events = append(events, event)
 	}
@@ -42,18 +42,18 @@ func parseEventMultiCall(content string) ([]shared.Event, error) {
 	return events, nil
 }
 
-func extractDataValue(innerXml string) (dataValue string) {
-	reader := bytes.NewReader([]byte(innerXml))
+func extractDataValue(innerXML string) (dataValue string) {
+	reader := bytes.NewReader([]byte(innerXML))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
 
-	type XmlData struct {
+	type XMLData struct {
 		ValueInt4    string `xml:"member>value>array>data>value>i4"`
 		ValueDouble  string `xml:"member>value>array>data>value>double"`
 		ValueBoolean string `xml:"member>value>array>data>value>boolean"`
 	}
 
-	xmlData := XmlData{}
+	xmlData := XMLData{}
 
 	if err := decoder.Decode(&xmlData); err != nil {
 		log.Fatalf("unable to parse XML '%s'", err)
@@ -74,8 +74,8 @@ func extractDataValue(innerXml string) (dataValue string) {
 	return "unknown"
 }
 
-func extractData(innerXml string) (serialNumber, what string) {
-	reader := bytes.NewReader([]byte(innerXml))
+func extractData(innerXML string) (serialNumber, what string) {
+	reader := bytes.NewReader([]byte(innerXML))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
 
@@ -95,8 +95,8 @@ func extractData(innerXml string) (serialNumber, what string) {
 	return serialNumber, what
 }
 
-func extractMethodName(innerXml string) string {
-	reader := bytes.NewReader([]byte(innerXml))
+func extractMethodName(innerXML string) string {
+	reader := bytes.NewReader([]byte(innerXML))
 	decoder := xml.NewDecoder(reader)
 	decoder.CharsetReader = charset.NewReaderLabel
 

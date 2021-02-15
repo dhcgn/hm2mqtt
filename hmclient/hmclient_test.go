@@ -23,7 +23,7 @@ func TestSetState(t *testing.T) {
 		address      string
 		valueKey     string
 		value        string
-		homematicUrl string
+		homematicURL string
 	}
 	tests := []struct {
 		name string
@@ -34,7 +34,7 @@ func TestSetState(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := SetState(tt.args.address, tt.args.valueKey, tt.args.value, tt.args.homematicUrl); got != tt.want {
+			if got := SetState(tt.args.address, tt.args.valueKey, tt.args.value, tt.args.homematicURL); got != tt.want {
 				t.Errorf("SetState() = %v, want %v", got, tt.want)
 			}
 		})
@@ -44,8 +44,8 @@ func TestSetState(t *testing.T) {
 func TestInit(t *testing.T) {
 	type args struct {
 		port         int
-		interfaceId  int
-		homematicUrl string
+		interfaceID  int
+		homematicURL string
 	}
 	tests := []struct {
 		name string
@@ -56,7 +56,7 @@ func TestInit(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Init(tt.args.port, tt.args.interfaceId, tt.args.homematicUrl); got != tt.want {
+			if got := Init(tt.args.port, tt.args.interfaceID, tt.args.homematicURL); got != tt.want {
 				t.Errorf("Init() = %v, want %v", got, tt.want)
 			}
 		})

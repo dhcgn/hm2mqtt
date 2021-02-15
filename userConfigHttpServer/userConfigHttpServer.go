@@ -1,4 +1,4 @@
-package userConfigHttpServer
+package userconfighttpserver
 
 import (
 	"fmt"
@@ -45,13 +45,14 @@ const forms = `
 
 func createTemplate() string {
 	r := strings.ReplaceAll(forms, "%ListenerPort%", strconv.Itoa(shared.Config.ListenerPort))
-	r = strings.ReplaceAll(r, "%InterfaceId%", strconv.Itoa(shared.Config.InterfaceId))
-	r = strings.ReplaceAll(r, "%HomematicUrl%", shared.Config.HomematicUrl)
-	r = strings.ReplaceAll(r, "%BrokerUrl%", shared.Config.BrokerUrl)
+	r = strings.ReplaceAll(r, "%InterfaceId%", strconv.Itoa(shared.Config.InterfaceID))
+	r = strings.ReplaceAll(r, "%HomematicUrl%", shared.Config.HomematicURL)
+	r = strings.ReplaceAll(r, "%BrokerUrl%", shared.Config.BrokerURL)
 
 	return r
 }
 
+// StartWebService starts a webservice for the user to alter the configuration
 func StartWebService() {
 	tmpl, _ := template.New("foo").Parse(createTemplate())
 
@@ -69,7 +70,7 @@ func StartWebService() {
 			fmt.Fprintf(w, "Port must be a number, was: %s", r.FormValue("ListenerPort"))
 			return
 		}
-		interfaceId, err := strconv.Atoi(r.FormValue("InterfaceId"))
+		interfaceID, err := strconv.Atoi(r.FormValue("InterfaceId"))
 		if err != nil {
 			fmt.Fprintf(w, "InterfaceId must be a number, was: %s", r.FormValue("InterfaceId"))
 			return
@@ -77,9 +78,9 @@ func StartWebService() {
 
 		c := shared.Configuration{
 			ListenerPort: port,
-			InterfaceId:  interfaceId,
-			HomematicUrl: r.FormValue("HomematicUrl"),
-			BrokerUrl:    r.FormValue("BrokerUrl"),
+			InterfaceID:  interfaceID,
+			HomematicURL: r.FormValue("HomematicUrl"),
+			BrokerURL:    r.FormValue("BrokerUrl"),
 		}
 
 		shared.UpdateConfiguration(c)

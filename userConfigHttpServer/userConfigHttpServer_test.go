@@ -1,4 +1,4 @@
-package userConfigHttpServer
+package userconfighttpserver
 
 import "testing"
 

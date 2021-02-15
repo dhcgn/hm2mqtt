@@ -14,6 +14,7 @@ func GetDevices() string {
 	body := `<?xml version="1.0"?>
 <methodCall><methodName>listDevices</methodName>`
 
+	// TODO url must be configured. But should be used for debugging purpose too.
 	req, _ := http.NewRequest("POST", "http://192.168.10.23:2001/", bytes.NewReader([]byte(body)))
 	req.Header.Set("Content-Type", "text/xml")
 
@@ -23,7 +24,8 @@ func GetDevices() string {
 	return string(b)
 }
 
-func SetState(address string, valueKey string, value string, homematicUrl string) string {
+// SetState sends a RPC call to homematic to set a value
+func SetState(address string, valueKey string, value string, homematicURL string) string {
 	body := `<?xml version="1.0"?>
 <methodCall>
     <methodName>setValue</methodName>
@@ -44,7 +46,7 @@ func SetState(address string, valueKey string, value string, homematicUrl string
 
 	fmt.Println(body)
 
-	req, e := http.NewRequest("POST", homematicUrl, bytes.NewReader([]byte(body)))
+	req, e := http.NewRequest("POST", homematicURL, bytes.NewReader([]byte(body)))
 	if e != nil {
 		log.Println("SetState ERROR:", e)
 		return ""
@@ -70,7 +72,7 @@ func SetState(address string, valueKey string, value string, homematicUrl string
 }
 
 //Init send a request to the CCU to subscribe http posts
-func Init(port int, interfaceId int, homematicUrl string) string {
+func Init(port int, interfaceID int, homematicURL string) string {
 	body :=
 		`<?xml version="1.0"?>
 <methodCall>
@@ -89,8 +91,8 @@ func Init(port int, interfaceId int, homematicUrl string) string {
   </params>
 </methodCall>`
 
-	body = fmt.Sprintf(body, port, interfaceId)
-	req, e := http.NewRequest("POST", homematicUrl, bytes.NewReader([]byte(body)))
+	body = fmt.Sprintf(body, port, interfaceID)
+	req, e := http.NewRequest("POST", homematicURL, bytes.NewReader([]byte(body)))
 	if e != nil {
 		log.Println("Init ERROR:", e)
 		return ""

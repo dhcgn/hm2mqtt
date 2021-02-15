@@ -1,4 +1,4 @@
-package mqttHandler
+package mqtthandler
 
 import (
 	"reflect"

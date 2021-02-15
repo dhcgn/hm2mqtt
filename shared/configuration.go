@@ -1,5 +1,7 @@
 package shared
 
+// TODO with Go 1.16 should use FS for testing
+
 import (
 	"encoding/json"
 	"io/ioutil"
@@ -8,16 +10,25 @@ import (
 	"path/filepath"
 )
 
+// Config is the instance of the actual Configuration
 var Config Configuration
+
+// ConfigFilePath is the path to the config file
 var ConfigFilePath string
 
+// Configuration is the config which is necessarily to run hm2mqtt
 type Configuration struct {
+	// ListenerPort is the own port which hm2mqtt is listening to
 	ListenerPort int
-	InterfaceId  int
-	HomematicUrl string
-	BrokerUrl    string
+	// InterfaceID is an ID used for RPC calls
+	InterfaceID int
+	// HomematicURL the url points to homematic rpc
+	HomematicURL string
+	// BrokerURL the url points to a mqtt broker
+	BrokerURL string
 }
 
+// UpdateConfiguration save new config to disk
 func UpdateConfiguration(c Configuration) {
 	Config = c
 
@@ -28,6 +39,7 @@ func UpdateConfiguration(c Configuration) {
 	f.Sync()
 }
 
+// ReadConfig read config from disk
 func ReadConfig(overriddenPath string) *Configuration {
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	ConfigFilePath = filepath.Join(dir, "config.json")
@@ -41,9 +53,9 @@ func ReadConfig(overriddenPath string) *Configuration {
 	if _, err := os.Stat(configSamplePath); os.IsNotExist(err) {
 		newConfig := Configuration{
 			ListenerPort: 8777,
-			InterfaceId:  2,
-			HomematicUrl: "http://127.0.0.1:2001/",
-			BrokerUrl:    "tcp://192.168.10.31:1883",
+			InterfaceID:  2,
+			HomematicURL: "http://127.0.0.1:2001/",
+			BrokerURL:    "tcp://192.168.10.31:1883",
 		}
 		f, _ := os.Create(configSamplePath)
 		defer f.Close()

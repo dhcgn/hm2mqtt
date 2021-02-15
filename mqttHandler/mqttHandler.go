@@ -1,4 +1,4 @@
-package mqttHandler
+package mqtthandler
 
 import (
 	"log"
@@ -11,6 +11,7 @@ import (
 
 // TOOO Change Impl to https://github.com/eclipse/paho.mqtt.golang/blob/43c9c445a89e7dca549a9bd445e3553dade9a2bc/cmd/docker/subscriber/main.go#L80
 
+// Handle for send data to a broker
 type Handle interface {
 	SendToBroker(e shared.Event)
 	Disconnect()
@@ -22,8 +23,8 @@ type handle struct {
 }
 
 const (
-	autoReconnect   = true
-	subsribeChannel = "hm/set/#"
+	autoReconnect    = true
+	subscribeChannel = "hm/set/#"
 )
 
 var (
@@ -32,22 +33,23 @@ var (
 	clientID = "HomeMaticMqttPlugin_" + id[0:16]
 )
 
+// New creates a new mqttHandler to creates a client for subscription and publishing
 func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
-	log.Println("Connect to Broker", config.BrokerUrl, "as", clientID)
-	opts := mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(clientID).SetAutoReconnect(autoReconnect)
+	log.Println("Connect to Broker", config.BrokerURL, "as", clientID)
+	opts := mqtt.NewClientOptions().AddBroker(config.BrokerURL).SetClientID(clientID).SetAutoReconnect(autoReconnect)
 	c := mqtt.NewClient(opts)
 
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
 
-	t := c.Subscribe(subsribeChannel, 1, handler)
+	t := c.Subscribe(subscribeChannel, 1, handler)
 	go func() {
 		<-t.Done()
 		if t.Error() != nil {
 			log.Println("ERROR SUBSCRIBING:", t.Error())
 		} else {
-			log.Println("subscribed to", subsribeChannel)
+			log.Println("subscribed to", subscribeChannel)
 		}
 	}()
 

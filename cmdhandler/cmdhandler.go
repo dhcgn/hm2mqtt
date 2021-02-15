@@ -8,6 +8,7 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
+// CmdHandler can send new
 type CmdHandler interface {
 	SendNewStateToHomematic(msg mqtt.Message)
 }
@@ -16,9 +17,10 @@ type cmdHandler struct {
 	homematicURL string
 }
 
-func NewCmdHandler(homematicUrl string) CmdHandler {
+// NewCmdHandler creates a CmdHandler
+func NewCmdHandler(homematicURL string) CmdHandler {
 	return &cmdHandler{
-		homematicURL: homematicUrl,
+		homematicURL: homematicURL,
 	}
 }
 
@@ -34,5 +36,6 @@ func (c *cmdHandler) SendNewStateToHomematic(msg mqtt.Message) {
 	address := segments[len(segments)-3]
 	value := string(msg.Payload())
 
+	// TODO should be an interface
 	hmclient.SetState(address, valueKey, value, c.homematicURL)
 }

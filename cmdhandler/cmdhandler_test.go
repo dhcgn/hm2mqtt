@@ -9,7 +9,7 @@ import (
 
 func TestNewCmdHandler(t *testing.T) {
 	type args struct {
-		homematicUrl string
+		homematicURL string
 	}
 	tests := []struct {
 		name string
@@ -20,7 +20,7 @@ func TestNewCmdHandler(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewCmdHandler(tt.args.homematicUrl); !reflect.DeepEqual(got, tt.want) {
+			if got := NewCmdHandler(tt.args.homematicURL); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewCmdHandler() = %v, want %v", got, tt.want)
 			}
 		})
