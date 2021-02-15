@@ -47,7 +47,7 @@ func main() {
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
 
-	mqttHandler := mqttHandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.AddCmd(msg) })
+	mqttHandler := mqttHandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.SendNewStateToHomematic(msg) })
 
 	go func() { hmeventhandler.HandlingIncomingEventsLoop(events, mqttHandler, friendlyName) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()

@@ -9,20 +9,20 @@ import (
 )
 
 type CmdHandler interface {
-	AddCmd(msg mqtt.Message)
+	SendNewStateToHomematic(msg mqtt.Message)
 }
 
 type cmdHandler struct {
-	homematicUrl string
+	homematicURL string
 }
 
 func NewCmdHandler(homematicUrl string) CmdHandler {
 	return &cmdHandler{
-		homematicUrl: homematicUrl,
+		homematicURL: homematicUrl,
 	}
 }
 
-func (c *cmdHandler) AddCmd(msg mqtt.Message) {
+func (c *cmdHandler) SendNewStateToHomematic(msg mqtt.Message) {
 	log.Println("cmd receiver got msg", msg.Topic(), string(msg.Payload()))
 
 	segments := strings.Split(msg.Topic(), "/")
@@ -34,5 +34,5 @@ func (c *cmdHandler) AddCmd(msg mqtt.Message) {
 	address := segments[len(segments)-3]
 	value := string(msg.Payload())
 
-	hmclient.SetState(address, valueKey, value, c.homematicUrl)
+	hmclient.SetState(address, valueKey, value, c.homematicURL)
 }
