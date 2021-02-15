@@ -2,13 +2,14 @@ package userConfigHttpServer
 
 import (
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/server"
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/dhcgn/gohomematicmqttplugin/server"
+	"github.com/dhcgn/gohomematicmqttplugin/shared"
 )
 
 const forms = `
@@ -51,7 +52,7 @@ func createTemplate() string {
 	return r
 }
 
-func Start() {
+func StartWebService() {
 	tmpl, _ := template.New("foo").Parse(createTemplate())
 
 	mux := http.NewServeMux()
