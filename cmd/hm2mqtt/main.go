@@ -10,15 +10,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/dhcgn/gohomematicmqttplugin/cmdhandler"
-	"github.com/dhcgn/gohomematicmqttplugin/friendlyamehandler"
+	"github.com/dhcgn/hm2mqtt/cmdhandler"
+	"github.com/dhcgn/hm2mqtt/friendlyamehandler"
 
-	"github.com/dhcgn/gohomematicmqttplugin/hmclient"
-	"github.com/dhcgn/gohomematicmqttplugin/hmeventhandler"
-	"github.com/dhcgn/gohomematicmqttplugin/hmlistener"
-	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
-	"github.com/dhcgn/gohomematicmqttplugin/userConfigHttpServer"
+	"github.com/dhcgn/hm2mqtt/hmclient"
+	"github.com/dhcgn/hm2mqtt/hmeventhandler"
+	"github.com/dhcgn/hm2mqtt/hmlistener"
+	"github.com/dhcgn/hm2mqtt/mqttHandler"
+	"github.com/dhcgn/hm2mqtt/shared"
+	"github.com/dhcgn/hm2mqtt/userConfigHttpServer"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -28,13 +28,13 @@ var (
 )
 
 const (
-	applicationName = "GoHomeMaticMqttPlugin"
+	applicationName = "hm2mqtt"
 )
 
 func main() {
 	fmt.Println(applicationName)
 	fmt.Println("Version:", version)
-	fmt.Println("Project URL: https://github.com/dhcgn/GoHomeMaticMqttPlugin ")
+	fmt.Println("Project URL: https://github.com/dhcgn/hm2mqtt ")
 
 	flag.Parse()
 

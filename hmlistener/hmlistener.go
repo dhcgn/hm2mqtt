@@ -2,11 +2,12 @@ package hmlistener
 
 import (
 	"fmt"
-	"github.com/dhcgn/gohomematicmqttplugin/server"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/dhcgn/hm2mqtt/server"
 )
 
 //StartServer start a http listener and write all incoming request to the chan

@@ -1,8 +1,8 @@
 package hmeventhandler
 
 import (
-	friendlyname "github.com/dhcgn/gohomematicmqttplugin/friendlyamehandler"
-	"github.com/dhcgn/gohomematicmqttplugin/mqttHandler"
+	friendlyname "github.com/dhcgn/hm2mqtt/friendlyamehandler"
+	"github.com/dhcgn/hm2mqtt/mqttHandler"
 )
 
 //HandlingIncomingEventsLoop parse incoming messages from chan to Events and send them via mqtt to the broker

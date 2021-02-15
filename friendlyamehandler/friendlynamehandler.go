@@ -1,6 +1,6 @@
 package friendlyamehandler
 
-import "github.com/dhcgn/gohomematicmqttplugin/shared"
+import "github.com/dhcgn/hm2mqtt/shared"
 
 type handler struct {
 }

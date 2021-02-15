@@ -1,4 +1,4 @@
-module github.com/dhcgn/gohomematicmqttplugin
+module github.com/dhcgn/hm2mqtt
 
 go 1.15
 

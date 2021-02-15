@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dhcgn/gohomematicmqttplugin/server"
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
+	"github.com/dhcgn/hm2mqtt/server"
+	"github.com/dhcgn/hm2mqtt/shared"
 )
 
 const forms = `
@@ -22,7 +22,7 @@ const forms = `
 	<p>Page will be reloaded in one second.</p>
 {{else}}
     <h1>HomeMatic MQTT Plugin</h1>
-	<p>More information: <a href="https://github.com/dhcgn/GoHomeMaticMqttPlugin">https://github.com/dhcgn/GoHomeMaticMqttPlugin</a></p>
+	<p>More information: <a href="https://github.com/dhcgn/hm2mqtt">https://github.com/dhcgn/hm2mqtt</a></p>
     <form method="POST">
         <label>ListenerPort:</label><br />
         <input type="text" name="ListenerPort" value="%ListenerPort%"><br />

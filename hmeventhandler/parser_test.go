@@ -1,9 +1,10 @@
 package hmeventhandler
 
 import (
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
 	"reflect"
 	"testing"
+
+	"github.com/dhcgn/hm2mqtt/shared"
 )
 
 func getTestData(testCase string) string {

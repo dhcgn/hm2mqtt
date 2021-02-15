@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/denisbrodbeck/machineid"
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
+	"github.com/dhcgn/hm2mqtt/shared"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 

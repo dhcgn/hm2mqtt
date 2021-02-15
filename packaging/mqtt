@@ -60,7 +60,7 @@ case "$1" in
   ;;
 info)
   echo "Info: <b>GoHomeMaticMqtt</b><br>"
-  echo "Info: <a href='https://github.com/dhcgn/GoHomeMaticMqttPlugin'>https://github.com/dhcgn/GoHomeMaticMqttPlugin</a>"
+  echo "Info: <a href='https://github.com/dhcgn/hm2mqtt'>https://github.com/dhcgn/hm2mqtt</a>"
   ;;
 stop)
   do_stop

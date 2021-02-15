@@ -69,7 +69,7 @@ foreach ($item in $platforms ) {
         $extension = $null
     }
         
-    $buildCode = (Join-Path -Path $rootFolder "cmd\GoHomeMaticMqttPlugin\")
+    $buildCode = (Join-Path -Path $rootFolder "cmd\hm2mqtt\")
    
     $count += 1
     Write-Progress -Activity ("Build $($item.GOOS) $($item.GOARCH)") -Status "Build publish" -PercentComplete ([Double]$count / $maxCount * 100)

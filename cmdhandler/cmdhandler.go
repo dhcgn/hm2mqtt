@@ -4,7 +4,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/dhcgn/gohomematicmqttplugin/hmclient"
+	"github.com/dhcgn/hm2mqtt/hmclient"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 

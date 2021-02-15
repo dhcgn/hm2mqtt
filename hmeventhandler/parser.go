@@ -3,9 +3,10 @@ package hmeventhandler
 import (
 	"bytes"
 	"encoding/xml"
-	"github.com/dhcgn/gohomematicmqttplugin/shared"
-	"golang.org/x/net/html/charset"
 	"log"
+
+	"github.com/dhcgn/hm2mqtt/shared"
+	"golang.org/x/net/html/charset"
 )
 
 type internalEvent struct {
