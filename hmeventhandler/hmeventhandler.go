@@ -6,7 +6,7 @@ import (
 )
 
 //HandlingIncomingEventsLoop parse incoming messages from chan to Events and send them via mqtt to the broker
-func HandlingIncomingEventsLoop(messages <-chan string, mqttHandler mqtthandler.Handle, friendlyNameHandler friendlyname.Handle) {
+func HandlingIncomingEventsLoop(messages <-chan string, mqtthandler mqtthandler.Handle, friendlyNameHandler friendlyname.Handle) {
 	for {
 		stringBody := <-messages
 		var events, err = parseEventMultiCall(stringBody)
@@ -18,7 +18,7 @@ func HandlingIncomingEventsLoop(messages <-chan string, mqttHandler mqtthandler.
 			friendlyNameHandler.ExtendList(e)
 			e = friendlyNameHandler.AdjustEvent(e)
 
-			mqttHandler.SendToBroker(e)
+			mqtthandler.SendToBroker(e)
 		}
 	}
 }

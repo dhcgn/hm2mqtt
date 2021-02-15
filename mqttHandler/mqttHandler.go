@@ -33,7 +33,7 @@ var (
 	clientID = "HomeMaticMqttPlugin_" + id[0:16]
 )
 
-// New creates a new mqttHandler to creates a client for subscription and publishing
+// New creates a new mqtthandler to creates a client for subscription and publishing
 func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 	log.Println("Connect to Broker", config.BrokerURL, "as", clientID)
 	opts := mqtt.NewClientOptions().AddBroker(config.BrokerURL).SetClientID(clientID).SetAutoReconnect(autoReconnect)

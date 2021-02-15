@@ -4,13 +4,13 @@ import (
 	"testing"
 
 	friendlyname "github.com/dhcgn/hm2mqtt/friendlyamehandler"
-	"github.com/dhcgn/hm2mqtt/mqttHandler"
+	"github.com/dhcgn/hm2mqtt/mqtthandler"
 )
 
 func TestHandlingIncomingEventsLoop(t *testing.T) {
 	type args struct {
 		messages            <-chan string
-		mqttHandler         mqttHandler.Handle
+		mqtthandler         mqtthandler.Handle
 		friendlyNameHandler friendlyname.Handle
 	}
 	tests := []struct {
@@ -21,7 +21,7 @@ func TestHandlingIncomingEventsLoop(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			HandlingIncomingEventsLoop(tt.args.messages, tt.args.mqttHandler, tt.args.friendlyNameHandler)
+			HandlingIncomingEventsLoop(tt.args.messages, tt.args.mqtthandler, tt.args.friendlyNameHandler)
 		})
 	}
 }

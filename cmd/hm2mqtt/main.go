@@ -47,9 +47,9 @@ func main() {
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
 
-	mqttHandler := mqtthandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.SendNewStateToHomematic(msg) })
+	mqtthandler := mqtthandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.SendNewStateToHomematic(msg) })
 
-	go func() { hmeventhandler.HandlingIncomingEventsLoop(events, mqttHandler, friendlyName) }()
+	go func() { hmeventhandler.HandlingIncomingEventsLoop(events, mqtthandler, friendlyName) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
 	go func() { refreshSubscriptionLoop(tickerRefreshSubscription.C, config) }()
 	go func() { statsLoop(tickerStatus.C, events) }()
@@ -60,7 +60,7 @@ func main() {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		cleanup(mqttHandler)
+		cleanup(mqtthandler)
 		os.Exit(1)
 	}()
 	<-cleanupDone
@@ -90,8 +90,8 @@ func refreshSubscriptionLoop(tick <-chan time.Time, config *shared.Configuration
 	}
 }
 
-func cleanup(mqttHandler mqtthandler.Handle) {
+func cleanup(mqtthandler mqtthandler.Handle) {
 	log.Println("Starting Cleanup")
 
-	mqttHandler.Disconnect()
+	mqtthandler.Disconnect()
 }
