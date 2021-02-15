@@ -11,24 +11,31 @@ import (
 
 // TOOO Change Impl to https://github.com/eclipse/paho.mqtt.golang/blob/43c9c445a89e7dca549a9bd445e3553dade9a2bc/cmd/docker/subscriber/main.go#L80
 
+type Handle interface {
+	SendToBroker(e shared.Event)
+	Disconnect()
+}
+
+type handle struct {
+	options *mqtt.ClientOptions
+	client  mqtt.Client
+}
+
 const (
-	AutoReconnect   = true
+	autoReconnect   = true
 	subsribeChannel = "hm/set/#"
 )
 
 var (
 	// TODO Set Last Will
-	opts *mqtt.ClientOptions
-	c    mqtt.Client
-
 	id, err  = machineid.ProtectedID("HomeMaticMqttPlugin")
-	ClientID = "HomeMaticMqttPlugin_" + id[0:16]
+	clientID = "HomeMaticMqttPlugin_" + id[0:16]
 )
 
-func Init(config *shared.Configuration, handler mqtt.MessageHandler) {
-	log.Println("Connect to Broker", config.BrokerUrl, "as", ClientID)
-	opts = mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(ClientID).SetAutoReconnect(AutoReconnect)
-	c = mqtt.NewClient(opts)
+func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
+	log.Println("Connect to Broker", config.BrokerUrl, "as", clientID)
+	opts := mqtt.NewClientOptions().AddBroker(config.BrokerUrl).SetClientID(clientID).SetAutoReconnect(autoReconnect)
+	c := mqtt.NewClient(opts)
 
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
@@ -44,19 +51,23 @@ func Init(config *shared.Configuration, handler mqtt.MessageHandler) {
 		}
 	}()
 
+	return &handle{
+		options: opts,
+		client:  c,
+	}
 }
 
-func Disconnect() {
+func (h handle) Disconnect() {
 	log.Println("Disconnect from Broker")
 
-	c.Disconnect(100)
+	h.client.Disconnect(100)
 }
 
-func SendToBroker(e shared.Event) {
+func (h handle) SendToBroker(e shared.Event) {
 	start := time.Now()
 
 	topic := "hm/" + e.SerialNumber + "/" + e.Type
-	token := c.Publish(topic, 1, false, e.DataValue)
+	token := h.client.Publish(topic, 1, false, e.DataValue)
 	wait := token.WaitTimeout(2 * time.Second)
 	err := token.Error()
 

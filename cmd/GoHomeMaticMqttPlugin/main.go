@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/dhcgn/gohomematicmqttplugin/cmdhandler"
+	"github.com/dhcgn/gohomematicmqttplugin/friendlyamehandler"
 
 	"github.com/dhcgn/gohomematicmqttplugin/hmclient"
 	"github.com/dhcgn/gohomematicmqttplugin/hmeventhandler"
@@ -40,25 +41,26 @@ func main() {
 	config := shared.ReadConfig(*flagTokenPtr)
 
 	cmd := cmdhandler.NewCmdHandler(config.HomematicUrl)
+	friendlyName := friendlyamehandler.New()
 
 	events := make(chan string, 1000)
 	tickerRefreshSubscription := time.NewTicker(1 * time.Minute)
 	tickerStatus := time.NewTicker(1 * time.Second)
 
-	mqttHandler.Init(config, func(client mqtt.Client, msg mqtt.Message) { cmd.AddCmd(msg) })
+	mqttHandler := mqttHandler.New(config, func(client mqtt.Client, msg mqtt.Message) { cmd.AddCmd(msg) })
 
-	go func() { hmeventhandler.UploadLoop(events) }()
+	go func() { hmeventhandler.HandlingIncomingEventsLoop(events, mqttHandler, friendlyName) }()
 	go func() { hmlistener.StartServer(events, config.ListenerPort) }()
 	go func() { refreshSubscriptionLoop(tickerRefreshSubscription.C, config) }()
 	go func() { statsLoop(tickerStatus.C, events) }()
-	go func() { userConfigHttpServer.Start() }()
+	go func() { userConfigHttpServer.StartWebService() }()
 
 	c := make(chan os.Signal)
 	cleanupDone := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		cleanup()
+		cleanup(mqttHandler)
 		os.Exit(1)
 	}()
 	<-cleanupDone
@@ -88,7 +90,7 @@ func refreshSubscriptionLoop(tick <-chan time.Time, config *shared.Configuration
 	}
 }
 
-func cleanup() {
+func cleanup(mqttHandler mqttHandler.Handle) {
 	log.Println("Starting Cleanup")
 
 	mqttHandler.Disconnect()
