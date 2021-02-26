@@ -41,7 +41,7 @@ func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 		AddBroker(config.BrokerURL).
 		SetClientID(clientID).
 		SetAutoReconnect(autoReconnect).
-		SetWill("hm/broker/state", "lost connection", 1, true)
+		SetWill("hm/bridge/state", "lost connection", 1, true)
 
 	c := mqtt.NewClient(opts)
 
@@ -49,7 +49,7 @@ func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 		panic(token.Error())
 	}
 
-	onlinetoken := c.Publish("hm/broker/state", 1, true, "online")
+	onlinetoken := c.Publish("hm/bridge/state", 1, true, "online")
 	<-onlinetoken.Done()
 
 	t := c.Subscribe(subscribeChannel, 1, handler)
@@ -72,7 +72,7 @@ func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 func (h handle) Disconnect() {
 	log.Println("Disconnect from Broker")
 
-	onlinetoken := h.client.Publish("hm/broker/state", 1, true, "offline")
+	onlinetoken := h.client.Publish("hm/bridge/state", 1, true, "offline")
 	<-onlinetoken.Done()
 
 	h.client.Disconnect(100)
@@ -87,6 +87,9 @@ func (h handle) SendToBroker(e shared.Event) {
 	err := token.Error()
 
 	elapsed := time.Since(start)
+
+	// Meta
+	h.client.Publish(topic+"/time", 1, h.config.Retain, time.Now().Format(time.RFC3339))
 
 	if wait && err == nil {
 		log.Println("OK:    topic:", topic, "with value: ", e.DataValue, elapsed)
