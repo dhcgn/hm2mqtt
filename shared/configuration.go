@@ -26,6 +26,8 @@ type Configuration struct {
 	HomematicURL string
 	// BrokerURL the url points to a mqtt broker
 	BrokerURL string
+	// Retain mqtt messages
+	Retain bool
 }
 
 // UpdateConfiguration save new config to disk

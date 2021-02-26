@@ -20,6 +20,7 @@ type Handle interface {
 type handle struct {
 	options *mqtt.ClientOptions
 	client  mqtt.Client
+	config  *shared.Configuration
 }
 
 const (
@@ -36,12 +37,20 @@ var (
 // New creates a new mqtthandler to creates a client for subscription and publishing
 func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 	log.Println("Connect to Broker", config.BrokerURL, "as", clientID)
-	opts := mqtt.NewClientOptions().AddBroker(config.BrokerURL).SetClientID(clientID).SetAutoReconnect(autoReconnect)
+	opts := mqtt.NewClientOptions().
+		AddBroker(config.BrokerURL).
+		SetClientID(clientID).
+		SetAutoReconnect(autoReconnect).
+		SetWill("hm/broker/state", "lost connection", 1, true)
+
 	c := mqtt.NewClient(opts)
 
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
+
+	onlinetoken := c.Publish("hm/broker/state", 1, true, "online")
+	<-onlinetoken.Done()
 
 	t := c.Subscribe(subscribeChannel, 1, handler)
 	go func() {
@@ -56,11 +65,15 @@ func New(config *shared.Configuration, handler mqtt.MessageHandler) Handle {
 	return &handle{
 		options: opts,
 		client:  c,
+		config:  config,
 	}
 }
 
 func (h handle) Disconnect() {
 	log.Println("Disconnect from Broker")
+
+	onlinetoken := h.client.Publish("hm/broker/state", 1, true, "offline")
+	<-onlinetoken.Done()
 
 	h.client.Disconnect(100)
 }
@@ -69,7 +82,7 @@ func (h handle) SendToBroker(e shared.Event) {
 	start := time.Now()
 
 	topic := "hm/" + e.SerialNumber + "/" + e.Type
-	token := h.client.Publish(topic, 1, false, e.DataValue)
+	token := h.client.Publish(topic, 1, h.config.Retain, e.DataValue)
 	wait := token.WaitTimeout(2 * time.Second)
 	err := token.Error()
 
